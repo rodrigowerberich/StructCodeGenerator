@@ -1,0 +1,8 @@
+# Adiciona um produto
+# a lista do 'pedido'
+
+M AddProduct
+F id    int
+F name  char[30]
+F order_code int
+E
