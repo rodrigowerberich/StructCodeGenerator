@@ -12,7 +12,7 @@ class ProcessEntryLineC(ProcessEntryLine):
         print('typedef struct {')
 
     def data_field(self, regex_result: ParseResult, context):
-        print(f'    {regex_result.parts()[1]} {regex_result.parts()[0]}')
+        print(f'    {regex_result.parts()[1]} {regex_result.parts()[0]};')
 
     def data_type_end(self, regex_result: ParseResult, context):
         print('} ', context.data_type_name, 'Msg;', sep='')
