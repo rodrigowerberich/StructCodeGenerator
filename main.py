@@ -30,7 +30,7 @@ if __name__ == '__main__':
         RegexExpression(LineTypes.MESSAGE_END, r'E\s*')
     ])
 
-    language = Languages.C
+    language = Languages.PASCAL
 
     if language == Languages.C:
         process = ProcessEntryLineC()
