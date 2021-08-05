@@ -28,11 +28,7 @@ class TypeMatchers(ABC):
 
 class ArrayProcessingTypeMatchers(TypeMatchers):
     @abstractmethod
-    def disable_array_processing(self):
-        pass
-
-    @abstractmethod
-    def enable_array_processing(self):
+    def process_type_str_without_arrays(self, type_str: str) -> str:
         pass
 
     @abstractmethod
@@ -92,11 +88,8 @@ class ArrayMatcher(TypeMatcher):
     def matches(self, original_type_str: str) -> bool:
         array_number_regex = re.findall(r'(\w+)\[(\d+)\]', original_type_str)
         if array_number_regex:
-            raw_array_type_str = array_number_regex[0][0]
+            array_type_str = self._type_matcher.process_type_str_without_arrays(array_number_regex[0][0])
             number = int(array_number_regex[0][1])
-            self._type_matcher.disable_array_processing()
-            array_type_str = self._type_matcher.process_type_str(raw_array_type_str)
-            self._type_matcher.enable_array_processing()
             self._representation = EchoRepresentation(f'array[{0}..{number - 1}] of {array_type_str}')
             return True
         else:
@@ -111,31 +104,29 @@ class PascalTypeMatcher(ArrayProcessingTypeMatchers):
     def __init__(self):
         self._process_array = True
 
-    def _build_matchers(self, type_str: str):
+    def _build_matchers(self, type_str: str, include_array_matchers: bool):
         array_matcher = [ArrayMatcher(type_str, self)]
         matchers = [
             StringMatcher('int', PascalIntRepresentation()),
             AnyMatcher(EchoRepresentation(type_str))
         ]
-        return array_matcher, matchers
-
-    def enable_array_processing(self):
-        self._process_array = True
-
-    def disable_array_processing(self):
-        self._process_array = False
-
-    def process_type_str(self, type_str: str) -> str:
-        array_matcher, matchers = self._build_matchers(type_str)
-        if self._process_array:
+        if include_array_matchers:
             matchers = array_matcher + matchers
+        return matchers
+
+    @staticmethod
+    def _process_type_str(type_str: str, matchers) -> str:
         for matcher in matchers:
             if matcher.matches(type_str):
                 return matcher.get_representation().get_representation()
 
+    def process_type_str_without_arrays(self, type_str: str) -> str:
+        matchers = self._build_matchers(type_str, include_array_matchers=False)
+        return self._process_type_str(type_str, matchers)
 
-def process_type_str(type_str: str) -> str:
-    return PascalTypeMatcher().process_type_str(type_str)
+    def process_type_str(self, type_str: str) -> str:
+        matchers = self._build_matchers(type_str, include_array_matchers=True)
+        return self._process_type_str(type_str, matchers)
 
 
 class ProcessEntryLinePascal(ProcessEntryLine):
@@ -147,11 +138,9 @@ class ProcessEntryLinePascal(ProcessEntryLine):
         print(f'{regex_result.parts()[0]}Msg = packed record')
 
     def data_field(self, regex_result, context):
-        # Very simple naive solution
         name_str = regex_result.parts()[0]
         raw_type_str = regex_result.parts()[1]
-        type_str = process_type_str(raw_type_str)
-
+        type_str = PascalTypeMatcher().process_type_str(raw_type_str)
         print(f'     {name_str}:    {type_str};')
 
     def data_type_end(self, regex_result, context):
