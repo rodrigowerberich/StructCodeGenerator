@@ -1,7 +1,7 @@
-from parseresultinterface import ParseResult
-from parserinterface import Parser
-from regexexpressions import RegexExpressions
-from parsefunctions import ParseFunctions
+from Parser.parseresultinterface import ParseResult
+from Parser.parserinterface import Parser
+from RegexParser.regexexpressions import RegexExpressions
+from Parser.parsefunctions import ParseFunctions
 import re
 
 

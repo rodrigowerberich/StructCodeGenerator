@@ -1,8 +1,8 @@
 import typing
 from dataclasses import dataclass
-from dictofidobject import DictOfIdObject
-from linetypes import LineTypes
-from processentryline import ProcessEntryLine
+from General.dictofidobject import DictOfIdObject
+from Parser.linetypes import LineTypes
+from Parser.processentryline import ProcessEntryLine
 
 
 @dataclass

@@ -23,10 +23,21 @@ Expected C output:
 /* Adiciona um produto */
 /* a lista do 'pedido' */
 typedef struct {
-    int id
-    char[30] name
-    int order_code
+    int id;
+    char[30] name;
+    int order_code;
 } AddProductMsg;
+```
+
+Expected C++ output:
+```
+/* Adiciona um produto */
+/* a lista do 'pedido' */
+struct AddProductMsg{
+    int id;
+    std::array<char, 30> name;
+    int order_code;
+};
 ```
 
 Expected Pascal output:
@@ -45,5 +56,5 @@ This is in no way meant to be a functional complete transpiler or code generator
 Just download and run the main.py
 > python3 main.py
 
-To change if the output should be C or PASCAL change the following line on main.py to the desired output:
+To change if the output should be C, C++ or PASCAL change the following line on main.py to the desired output:
 > language = Languages.PASCAL

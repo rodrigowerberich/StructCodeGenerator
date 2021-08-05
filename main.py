@@ -1,11 +1,13 @@
 from dataclasses import dataclass
 from enum import Enum
-from regexexpressions import RegexExpressions, RegexExpression
-from linetypes import LineTypes
-from processentrylinec import ProcessEntryLineC
-from processentrylinepascal import ProcessEntryLinePascal
-from parsefunctions import ParseFunctions
-from regexparser import RegexParser
+
+from CPP.processentrylinecpp import ProcessEntryLineCpp
+from RegexParser.regexexpressions import RegexExpressions, RegexExpression
+from Parser.linetypes import LineTypes
+from C.processentrylinec import ProcessEntryLineC
+from Pascal.processentrylinepascal import ProcessEntryLinePascal
+from Parser.parsefunctions import ParseFunctions
+from RegexParser.regexparser import RegexParser
 
 
 @dataclass
@@ -15,7 +17,8 @@ class Context:
 
 class Languages(Enum):
     C = 1,
-    PASCAL = 2
+    CPP = 2,
+    PASCAL = 3
 
 
 if __name__ == '__main__':
@@ -30,10 +33,13 @@ if __name__ == '__main__':
         RegexExpression(LineTypes.MESSAGE_END, r'E\s*')
     ])
 
-    language = Languages.PASCAL
+    # Select the output language
+    language = Languages.CPP
 
     if language == Languages.C:
         process = ProcessEntryLineC()
+    elif language == Languages.CPP:
+        process = ProcessEntryLineCpp()
     elif language == Languages.PASCAL:
         process = ProcessEntryLinePascal()
 

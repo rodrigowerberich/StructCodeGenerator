@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 import typing
-from dictofidobject import DictOfIdObject
+from General.dictofidobject import DictOfIdObject
 
 
 @dataclass

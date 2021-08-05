@@ -1,5 +1,5 @@
-from processentryline import ProcessEntryLine
-from parseresultinterface import ParseResult
+from Parser.processentryline import ProcessEntryLine
+from Parser.parseresultinterface import ParseResult
 
 
 class ProcessEntryLineC(ProcessEntryLine):

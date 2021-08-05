@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from parseresultinterface import ParseResult
+from Parser.parseresultinterface import ParseResult
 
 
 class ProcessEntryLine(ABC):
